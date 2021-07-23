@@ -9,10 +9,10 @@ import { Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Toolbar from "@material-ui/core/Toolbar";
 import { NavLink } from "react-router-dom";
-import Login from "./Login/Login"
+import Login from "../Login/Login"
 import Icon from '@material-ui/core/Icon';
 import AccessibleForwardOutlinedIcon from '@material-ui/icons/AccessibleForwardOutlined';
-import {ReactComponent as ReactLogo} from '../Resources/HireStudLogo.svg';
+import Logo from "../Logo/Logo"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,7 +40,6 @@ function Sidebar() {
     window.location.reload();
   };
 
-//   const [image] = React.useState(pic);
 
 
   return (
@@ -57,9 +56,9 @@ function Sidebar() {
                 to={`/`}
                 style={{ textDecoration: "none" }}
               >
-                {/* <AccessibleForwardOutlinedIcon fontSize={"large"} color={'secondary'}/> */}
 
-                <ReactLogo />
+            {/* poziq here */}
+            <Logo className="logo"/>
 
           </NavLink>
           <Toolbar variant="dense">
