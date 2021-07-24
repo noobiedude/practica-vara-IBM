@@ -1,0 +1,17 @@
+const mongoose = require(`mongoose`);
+
+const dbConfig = {
+    'mongoURI': `mongodb+srv://admin:1234@cluster0.qlgjq.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`
+};
+
+const connectToDatabase = async() => {
+    const connection = await mongoose.connect(dbConfig.mongoURI, {useNewUrlParser:true,useUnifiedTopology:true,useCreateIndex:true});
+    if (connection){
+        console.log(`Connected to the database!`);
+    }
+    else{
+        console.log(`Error: ${connection}`);
+    }
+}
+
+module.exports={ connectToDatabase };
