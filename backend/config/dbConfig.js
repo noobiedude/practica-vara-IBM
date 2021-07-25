@@ -1,7 +1,7 @@
 const mongoose = require(`mongoose`);
 
 const dbConfig = {
-    'mongoURI': `mongodb+srv://admin:1234@cluster0.qlgjq.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`
+    'mongoURI': `mongodb+srv://admin:1234@cluster0.qlgjq.mongodb.net/practicavara?retryWrites=true&w=majority`
 };
 
 const connectToDatabase = async() => {
