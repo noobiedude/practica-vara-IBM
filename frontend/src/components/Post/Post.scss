@@ -1,18 +1,32 @@
+
+*{
+ margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 .post {
+  height:100%;
     display: flex;
-    align-items: flex-start; //avatar
+    align-items: flex-start; 
     border-bottom: 1px solid var(--twitter-background);
-    padding-bottom: 10px;
-    // justify-content: center;
-    margin-left: 33%;
+    justify-content: center;
+    flex-direction: column;
+    width: 28%;
+    margin: 0 auto;
+    margin-top: 4rem;
+    border: 1px solid gainsboro;
+    border-radius: 10px;
+    
   }
-  
+ 
+
   .post__body { 
+    display: flex;
     align-items: center;
     justify-content: center;
-    width: 20%;
     height: 20%;
     padding: 10px;
+    margin: 1rem auto;
   }
   
   .post__body > img {
@@ -24,7 +38,19 @@
     justify-content: center;
     margin-top: 20px;
   }
-  
+
+  .buttonFooter{
+    background-color:green;
+    border: none;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: bold;
+    padding: 0.75em; // 12px/16px
+    display: inline-block;
+    text-decoration: none; 
+  }
+
+
   .post__headerDescription {
     margin-bottom: 10px;
     font-size: 15px;
@@ -47,6 +73,59 @@
   }
   
   .post__avatar {
-    padding: 20px;
+   display: flex;
+   align-items: center;
+   justify-content: flex-start;
+   margin:1rem;
   }
   
+ .comment__container{
+   width: 95%;
+   border: 1px solid gainsboro;
+   border-radius:10px;
+   margin:0 auto;
+   margin-bottom:1rem;
+   display: flex;
+   height: 100px;
+   flex-direction: column;
+   padding: 0.5rem;
+   height:100%;
+  
+
+   .comment__header{
+     display: flex;
+     flex-direction: row;
+     
+   
+     .comment__name-date{
+      
+       display: flex;
+       flex-direction: column;
+       justify-content: flex-start;
+        margin-left: 1.5rem;
+       p{
+         margin-bottom: 0;
+         font-weight: bold;
+       }
+       span{
+         margin: 0;
+         font-size: 1rem;
+         color: lightgray;
+       }
+     }
+   }
+   .comment__body{
+     margin-left:1rem;
+     padding: 1rem 0;
+
+     button{
+       background: none;
+       border:none;
+       color:lightblue;
+
+       &:hover{
+         color:rgb(102, 203, 237)
+       }
+     }
+   }
+ }
