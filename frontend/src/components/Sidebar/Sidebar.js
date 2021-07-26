@@ -14,99 +14,53 @@ import Icon from '@material-ui/core/Icon';
 import AccessibleForwardOutlinedIcon from '@material-ui/icons/AccessibleForwardOutlined';
 import Logo from "../Logo/Logo"
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
-  container: {
-    alignItems: "flex-end",
-    justifyContent: "space-between",
-  },
-  link: {
-    color: "inherit",
-    textDecoration: "none",
-  },
-}));
-
-function Sidebar() {
-  const [sidebar, setSidebar] = useState(false);
-  const showSidebar = () => setSidebar(!sidebar);
-
-  const classes = useStyles();
-  const currentUser = JSON.parse(localStorage.getItem("user"));
-
-  const logout = () => {
-    localStorage.removeItem("user");
-    window.location.reload();
-  };
 
 
+function Sidebar(){
+  return(
+    <div>
+   <NavBar />
+    </div>
+  )
+}
 
-  return (
-    <>
-      <IconContext.Provider value={{ color: "#fff" }}>
-        <div className="sidebar">
-          <Link to="#" className="menu-bars">
-            <FaIcons.FaBars onClick={showSidebar} />
-          </Link>
+function NavBar(){
 
-          {/* HEADER IS HERE */}
-          <NavLink
-          className={classes.link}
+    const [open, setOpen] = useState(false);
+
+  return( <div>
+    <nav>
+    
+    
+      <div className="logo">
+              <NavLink
+       
                 to={`/`}
                 style={{ textDecoration: "none" }}
               >
 
-            {/* poziq here */}
+          
             <Logo className="logo"/>
 
           </NavLink>
-          <Toolbar variant="dense">
-            {!currentUser ? (
-              <NavLink
-                className={classes.link}
-                to={`/login`}
-                style={{ textDecoration: "none" }}
-              >
-                <Button color="secondary">Login</Button>
-              </NavLink>
-            ) : (
-              <div>
-                <Button disabled>{currentUser.username}</Button>
-                <Button onClick={logout} color="secondary">
-                  Logout
-                </Button>
-              </div>
-            )}
-          </Toolbar>
-          {/* HEADER IS HERE */}
-        </div>
+      
+      </div>
+      <ul className="nav-links"  style={{transform: open ? "translateX(0px)" : "" }}>
+      
+          <li> <a href="/">Home</a></li>
+          <li> <a href="/feed" >Route2</a></li>
+          <li> <a href="#">Route3</a></li>
+          <li> <a href="">Route4</a></li>
+          <li> <a href="/login">Login</a></li>
+          
+      </ul>
+      <i onClick={() => setOpen(!open)}  className="fas fa-bars burger"></i>
+     
+    </nav>
+   
+  </div>
 
-        <nav className={sidebar ? "nav-menu active" : "nav-menu"}>
-          <ul className="nav-menu-items" onClick={showSidebar} >
-            <li className="navbar-toggle">
-              <Link to="#" className="menu-bars">
-                <AiIcons.AiOutlineClose />
-              </Link>
-            </li>
-            {SidebarData.map((item, index) => {
-              return (
-                <li key={index} className={item.className}>
-                  <Link to={item.path}>
-                    {item.icon}
-                    <span>{item.title}</span>
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </nav>
-      </IconContext.Provider>
-      <Switch>
-        <Route path="/login" exact component={Login} />
-    </Switch>
-    </>
-  );
+  )
 }
 
 export default Sidebar;
