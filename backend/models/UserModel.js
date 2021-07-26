@@ -43,7 +43,7 @@ const UserSchema = new mongoose.Schema({
         minlength: 10,
         maxlength: 1000,
         required: true
-    },
+    }
 
 });
 
@@ -63,7 +63,7 @@ UserSchema.methods.setPassword = function(password) {
 
 // metoda de validare a parolei, practic comparam hash-ul parolei introduse cu hash-ul din DB
 UserSchema.methods.validPassword = function(password) { 
-    const hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64, `sha512`).toString(`hex`); 
+    const hash = crypto.pbkdf2Sync(password, this.salt, 100, 64, `sha512`).toString(`hex`); 
     //daca hash-urile sunt identice returnam true
     return this.hash === hash; 
 }; 
