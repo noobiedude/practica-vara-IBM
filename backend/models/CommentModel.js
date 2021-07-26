@@ -3,11 +3,13 @@ const mongoose = require(`mongoose`);
 const CommentSchema = new mongoose.Schema({
     createdBy: {
         type: String,
-        required: true
+        required: true,
+        ref: "User"
     },
     postId:{
         type: String,
-        required: true 
+        required: true,
+        ref: "Post"
     },
     content: {
         type: String,

@@ -4,7 +4,7 @@ const PostSchema = new mongoose.Schema({
     createdBy: {
         type: String,
         required: true,
-        ref: 'comments'
+        ref: "User"
     },
     type:{
         type: String,
