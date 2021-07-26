@@ -3,7 +3,8 @@ const mongoose = require(`mongoose`);
 const PostSchema = new mongoose.Schema({
     createdBy: {
         type: String,
-        required: true
+        required: true,
+        ref: 'comments'
     },
     type:{
         type: String,
