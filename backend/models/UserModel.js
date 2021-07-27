@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-import { isEmail } from 'validator';
+const validator = require('validator');
 const crypto = require('crypto');
 
 const UserSchema = new mongoose.Schema({
@@ -15,7 +15,7 @@ const UserSchema = new mongoose.Schema({
         // in cazul in care utilizatorul introduce din greseala spatii la inceput/final aplicam trim
         trim: true,
         unique: true,
-        validate: [isEmail, 'Invalid email'],
+        validate: [validator.isEmail, 'Invalid email'],
         minlength: 20,
         maxlength: 50,
         required: true
