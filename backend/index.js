@@ -11,6 +11,8 @@ const PORT = process.env.PORT || 5000;
 const postRoutes = require(`./routes/post`);
 const authRoutes = require(`./routes/auth`);
 const cookieParser = require('cookie-parser');
+//middleware pentru rutele care trebuie protejate
+const { requireAuth, checkUser } = require('./middleware/auth'); 
 
 app.use(express.json());
 
@@ -19,6 +21,7 @@ app.use(cors({
     credentials:true
   }));
 
+app.get('*', checkUser);
 app.use(`/posts`, postRoutes);
 app.use(authRoutes);
 app.use(cookieParser);

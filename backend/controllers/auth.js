@@ -6,6 +6,16 @@ const handleErrors = (err) => {
   console.log(err.message, err.code);
   let errors = {type: '', name: '' ,email: '', password: '', description: ''};
 
+  //incorrect email
+  if(err.message === 'Incorrect email') {
+    errors.email = "The email doesn't exist";
+  }
+
+  //incorrect password
+  if(err.message === 'Incorrect password') {
+    errors.password = "The password is incorrect";
+  }
+
   //duplicate key error
   if(err.code === 11000) {
     errors.email = "The email is already used";
@@ -32,7 +42,7 @@ const createToken = (id) => {
 
 const signupGet = (req, res) => {
   res.render(`signup view here`);
-}
+};
 
 const signupPost = async (req, res) => {
   const { type, name, email, password, description} = req.body;
@@ -40,31 +50,43 @@ const signupPost = async (req, res) => {
   try {
     const user = await User.create({type, name, email, password, description});
     const token = createToken(user._id);
-    res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 100});
+    res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 100}); //maxAge is in milliseconds
     res.status(201).json({user: user._id});
     //pe partea de front se trimit doar user._id si jwt token in cazul in care nu exista erori
   } 
   catch (err) {
     const errors = handleErrors(err);
-    res.status(400).json(errors);
+    res.status(400).json({ errors });
     //se trimite un obiect json cu {type, name, email, password, description} care specifica campurile care nu respecta cerintele
   }
-}
+};
 
 //Login
 
 const loginGet = (req, res) => {
   res.render(`login view here`);
-}
+};
 
 const loginPost = async (req, res) => {
   const { email, password} = req.body;
-  res.send(`login`);
-}
+
+  try {
+    const user = await User.login(email, password);
+    const token = createToken(user._id);
+    res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 100});
+    res.status(200).json({ user: user._id });
+  }
+  catch (err) {
+    const errors = handleErrors(err);
+    res.status(400).json({ errors });
+  }
+};
 
 //Logout
 const logoutGet = (req, res) => {
-  res.render(`logout view here`);
-}
+  res.cookie('jwt', '', {maxAge: 1});
+  //redirect to homepage
+  res.redirect('/');
+};
 
 module.exports = { signupGet, signupPost, loginGet, loginPost, logoutGet};
