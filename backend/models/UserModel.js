@@ -1,13 +1,21 @@
 const mongoose = require('mongoose');
-const validator = require('validator');
-const crypto = require('crypto');
+const { isEmail } = require('validator');
+const bcrypt = require('bcrypt');
 
 const UserSchema = new mongoose.Schema({
     type: { 
         type: String,
-        enum: ["Guest, Company, Student, Admin"],
-        default: "Guest",
-        required: true
+        enum: ["Company", "Student", "Admin"],
+        required: [true, 'Please tell us if you are a Student or a Company']
+    },
+
+    name: { 
+        type: String,
+        // in cazul in care utilizatorul introduce din greseala spatii la inceput/final aplicam trim
+        trim: true,
+        minlength: [10, 'The minumum length is 10'],
+        maxlength: [100, 'The maximum length is 100'],
+        required: [true, 'Please enter your name']
     },
 
     email: { 
@@ -15,58 +23,35 @@ const UserSchema = new mongoose.Schema({
         // in cazul in care utilizatorul introduce din greseala spatii la inceput/final aplicam trim
         trim: true,
         unique: true,
-        validate: [validator.isEmail, 'Invalid email'],
-        minlength: 20,
-        maxlength: 50,
-        required: true
+        validate: [isEmail, 'Invalid email'],
+        minlength: [20, 'The minumum length is 20'],
+        maxlength: [50, 'The maximum length is 50'],
+        required: [true, 'Please enter your email']
     },
 
     //in baza de date nu vom salva parola implicita, ci varianta hashed
-    hashedPassword: { 
+    password: { 
         type: String,
-        required: true
-    },
-
-    salt: String,
-
-    name: { 
-        type: String,
-        // in cazul in care utilizatorul introduce din greseala spatii la inceput/final aplicam trim
-        trim: true,
-        minlength: 10,
-        maxlength: 100,
-        required: true
+        required: [true, 'Please enter your password'],
+        minlength: [6, 'The minumum length is 6']
     },
 
     description: { 
         type: String,
-        minlength: 10,
-        maxlength: 1000,
+        minlength: [10, 'The minumum length is 10'],
+        maxlength: [1000, 'The maximum length is 1000'],
         required: true
-    }
+    },
 
 });
 
-//PENTRU AUTENTIFICARE SETEAZA/VERIFICA PAROLA
-
-//atribuim fiecarui user un salt si un hashedPassword
-UserSchema.methods.setPassword = function(password) { 
-     
-    // Salt unic pentru fiecare user
-       this.salt = crypto.randomBytes(16).toString('hex'); 
-     
-       // "Hash-uim" salt-ul si parola cu 100 de iteratii 
-        
-       this.hashedPassword = crypto.pbkdf2Sync(password, this.salt,  
-       100, 64, `sha512`).toString(`hex`); 
-   };
-
-// metoda de validare a parolei, practic comparam hash-ul parolei introduse cu hash-ul din DB
-UserSchema.methods.validPassword = function(password) { 
-    const hash = crypto.pbkdf2Sync(password, this.salt, 100, 64, `sha512`).toString(`hex`); 
-    //daca hash-urile sunt identice returnam true
-    return this.hash === hash; 
-}; 
+// mongoose hooks
+// fire a function before the data is saved in the DB
+UserSchema.pre('save', async function(next) {
+    const salt = await bcrypt.genSalt();
+    this.password = await bcrypt.hash(this.password, salt);
+    next();
+});
 
 const UserModel =  mongoose.model(`User`, UserSchema, 'User');
 
