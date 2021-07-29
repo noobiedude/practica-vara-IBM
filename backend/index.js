@@ -21,7 +21,7 @@ app.use(cors({
     credentials:true
   }));
 
-app.get('*', checkUser);
+//app.get('*', checkUser);
 app.use(`/posts`, postRoutes);
 app.use(authRoutes);
 app.use(cookieParser);
