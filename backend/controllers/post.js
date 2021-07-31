@@ -11,10 +11,10 @@ const getPosts = (req, res) => {
     let cursor;
     if (lastPostId === null)
     {
-        cursor = PostModel.find({}).limit(PAGE_SIZE).lean().populate({path: 'createdBy', select: '-password'})
+        cursor = PostModel.find({}).sort({_id: -1}).limit(PAGE_SIZE).lean().populate({path: 'createdBy', select: '-password'})
     }
     else{
-        cursor = cursor = PostModel.find({'_id': {'$gt': lastPostId}}).limit(PAGE_SIZE).lean().populate({path: 'createdBy', select: '-password'})
+        cursor = cursor = PostModel.find({'_id': {'$lt': lastPostId}}).sort({_id: -1}).limit(PAGE_SIZE).lean().populate({path: 'createdBy', select: '-password'})
     }
     cursor.exec((err, posts) => {
         if (!err){
@@ -61,4 +61,34 @@ const getPost = (req, res) => {
         })
 }
 
-module.exports = {getPosts, getPost};
+const addPost = (req, res) => {
+    /*
+    req.body contains an user object which represents the user that wants to add the post and the post inputs 
+    
+        req = {
+            user: {
+                _id:,
+                type:
+            },
+            post:{
+                title,
+                description,
+                workHours,
+                location,
+                programmingLanguage
+            }
+        }
+    */
+    const postType = req.body.user.type === `student` ? `request` : `offer`;
+    const newPost = {...req.body.post, type: postType, createdBy: req.body.user._id};
+    //validation
+    PostModel.create(newPost, (err, newPost) => {
+        if (err)
+            res.status(400).json({err});
+        else{
+            res.status(201).json(newPost);
+            //res.redirect(`/`);
+        }
+    })
+}
+module.exports = {getPosts, getPost, addPost};

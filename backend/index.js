@@ -15,16 +15,16 @@ const cookieParser = require('cookie-parser');
 const { requireAuth, checkUser } = require('./middleware/auth'); 
 
 app.use(express.json());
+app.use(cookieParser());
 
 app.use(cors({
-    origin: FRONTEND_ADDRESS,
+    origin: true,
     credentials:true
   }));
 
 //app.get('*', checkUser);
 app.use(`/posts`, postRoutes);
 app.use(authRoutes);
-app.use(cookieParser);
 
 databaseConfig.connectToDatabase();
 
