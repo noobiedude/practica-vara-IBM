@@ -63,32 +63,38 @@ const getPost = (req, res) => {
 
 const addPost = (req, res) => {
     /*
-    req.body contains an user object which represents the user that wants to add the post and the post inputs 
+    req.body contains the post details
     
-        req = {
-            user: {
-                _id:,
-                type:
-            },
-            post:{
+        |
+        |
+        V
+
+
+        req.body = {
                 title,
                 description,
                 workHours,
                 location,
                 programmingLanguage
-            }
         }
     */
-    const postType = req.body.user.type === `student` ? `request` : `offer`;
-    const newPost = {...req.body.post, type: postType, createdBy: req.body.user._id};
-    //validation
-    PostModel.create(newPost, (err, newPost) => {
-        if (err)
-            res.status(400).json({err});
+   const user = UserModel.findById(req.cookies.userId, (err, user) => {
+       if (err)
+        res.redirect(`/login`);
         else{
-            res.status(201).json(newPost);
-            //res.redirect(`/`);
+            const postType = user.type === `student` ? `request` : `offer`;
+            const newPost = {...req.body, type: postType, createdBy: user._id};
+            //validation
+            PostModel.create(newPost, (err, newPost) => {
+                if (err)
+                    res.status(400).json({err});
+                else{
+                    res.status(201).json(newPost);
+                    //res.redirect(`/`);
+                }
+            })
         }
-    })
+   });
+    
 }
 module.exports = {getPosts, getPost, addPost};
