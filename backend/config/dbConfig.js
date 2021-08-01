@@ -1,4 +1,5 @@
 const mongoose = require(`mongoose`);
+mongoose.set('useFindAndModify', false);
 
 const dbConfig = {
     'mongoURI': `mongodb+srv://admin:1234@cluster0.qlgjq.mongodb.net/practicavara?retryWrites=true&w=majority`

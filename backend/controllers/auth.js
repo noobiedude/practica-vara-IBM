@@ -57,7 +57,7 @@ const signupPost = async (req, res) => {
   } 
   catch (err) {
     const errors = handleErrors(err);
-    res.status(400).json({ errors });
+    res.status(err.status).json({ errors });
     //se trimite un obiect json cu {type, name, email, password, description} care specifica campurile care nu respecta cerintele
   }
 };
@@ -80,7 +80,7 @@ const loginPost = async (req, res) => {
   }
   catch (err) {
     const errors = handleErrors(err);
-    res.status(400).json({ errors });
+    res.status(err.status).json({ errors });
   }
 };
 
@@ -89,7 +89,8 @@ const logoutGet = (req, res) => {
   res.cookie('jwt', '', {maxAge: 1});
   res.cookie('userId', '', {maxAge: 1});
   //redirect to homepage
-  res.redirect('/');
+  // res.redirect('/');
+  res.send("You logged out!");
 };
 
 module.exports = { signupGet, signupPost, loginGet, loginPost, logoutGet};
