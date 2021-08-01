@@ -4,42 +4,10 @@ import React from "react";
 import * as Yup from "yup";
 // import axios from "../../axios/axios";
 import Modal from "@material-ui/core/Modal";
-
-const useStyles = makeStyles((theme) => ({
-  form: {
-    display: "flex",
-    flexDirection: "column",
-    marginTop: "3%",
-  },
-  img: {
-    textAlign: "center",
-    borderRadius: 10,
-  },
-  container: {
-    marginTop: "5%",
-  },
-  paper: {
-    position: "absolute",
-    width: "30%",
-    backgroundColor: theme.palette.background.paper,
-    border: "2px solid #000",
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
-    color: "black",
-  },
-  modal: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  buttonsContainer: {
-    display: "flex",
-    justifyContent: "space-evenly",
-  },
-}));
+import * as loginData from "./test.json";
+import "./Login.scss";
 
 const Login = (props) => {
-  const classes = useStyles();
   let showHidePassword = false;
   const [open, setOpen] = React.useState(false);
 
@@ -62,22 +30,34 @@ const Login = (props) => {
     }),
     onSubmit: (values) => {
       alert(JSON.stringify(values, null, 2));
-    //   axios
-    //     .post("/auth/login", values)
-    //     .then((response) => {
-    //       if (response.data.accessToken) {
-    //         localStorage.setItem("user", JSON.stringify(response.data));
-    //       }
-    //       props.history.push({ pathname: "/" });
-    //       window.location.reload();
 
-    //       console.log(response.data);
-    //     })
-    //     .catch((error) => {
-    //       console.log(error);
-    //       setOpen(true);
-    //     });
-    },
+      loginData.users.forEach(obj => {
+        if (
+          values.username === obj.username &&
+          values.password === obj.password
+        ) {
+          localStorage.setItem("user", JSON.stringify(obj));
+          props.history.push({ pathname: "/" });
+          window.location.reload();
+        }
+      })
+
+        // axios
+        //   .post("/auth/login", values)
+        //   .then((response) => {
+        //     if (response.data.accessToken) {
+        //       localStorage.setItem("user", JSON.stringify(response.data));
+        //     }
+        //     props.history.push({ pathname: "/" });
+        //     window.location.reload();
+
+        //     console.log(response.data);
+        //   })
+        //   .catch((error) => {
+        //     console.log(error);
+        //     setOpen(true);
+        //   });
+    }
   });
 
   const messageP = Math.random();
@@ -94,19 +74,19 @@ const Login = (props) => {
 
   return (
     <>
-      <Container maxWidth="xs" className={classes.container}>
-        <div className={classes.img}>
+      <Container maxWidth="xs" class="container">
+        <div class='img'>
           <img
             src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
             alt="profile-img"
           />
         </div>
 
-        <form onSubmit={formik.handleSubmit} className={classes.form}>
+        <form onSubmit={formik.handleSubmit} class='form'>
           <TextField
             id="username"
             label="Username"
-            className="text-input"
+            class="text-input"
             onChange={formik.handleChange}
             value={formik.values.username}
             onBlur={formik.handleBlur}
@@ -123,7 +103,7 @@ const Login = (props) => {
             id="password"
             type={showHidePassword ? "text" : "password"}
             label="Password"
-            className="text-input"
+            class="text-input"
             onChange={formik.handleChange}
             value={formik.values.description}
             onBlur={formik.handleBlur}
@@ -148,9 +128,9 @@ const Login = (props) => {
         onClose={handleClose}
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
-        className={classes.modal}
+        class='modal'
       >
-        <div className={classes.paper}>
+        <div class='paper'>
           {message ? (
             message
           ) : (
@@ -165,7 +145,7 @@ const Login = (props) => {
               </h4>
             </div>
           )}
-          <div className={classes.buttonsContainer}>
+          <div class='buttonsContainer'>
             <Button onClick={handleClose} variant="outlined" color="secondary">
               OK
             </Button>
