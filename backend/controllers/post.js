@@ -3,8 +3,8 @@ const PostModel = require('../models/PostModel');
 const CommentModel = require('../models/CommentModel');
 const UserModel = require('../models/UserModel');
 
-const PAGE_SIZE = 3;
-const COMMENTS_NUM_PER_PAGE = 3;
+const PAGE_SIZE = 10;
+const COMMENTS_NUM_PER_PAGE = 10;
 
 const getPosts = (req, res) => {
     let lastPostId = req.body.lastPostId || null;
@@ -78,7 +78,7 @@ const addPost = (req, res) => {
                 programmingLanguage
         }
     */
-   const user = UserModel.findById(req.cookies.userId, (err, user) => {
+    UserModel.findById(req.cookies.userId, (err, user) => {
        if (err)
         res.redirect(`/login`);
         else{
@@ -97,4 +97,28 @@ const addPost = (req, res) => {
    });
     
 }
-module.exports = {getPosts, getPost, addPost};
+
+const editPost = (req, res) => {
+    const postId = res.locals.postId;
+    PostModel.findById(postId, (err, post) => {
+        if (err)
+            res.status(err.status).json({err});
+        else{
+            Object.assign(post, req.body);
+            post.save().then(editedPost => {
+                res.status(200).json(editedPost);
+            });
+        }
+    })
+};
+
+const deletePost = (req, res) => {
+    const postId = res.locals.postId;
+    PostModel.deleteOne({'_id': postId}, err => {
+        if (err)
+            res.status(err.status).json({err});
+        else res.send(`deleted!`);
+    })
+};
+
+module.exports = {getPosts, getPost, addPost, editPost, deletePost};
