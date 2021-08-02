@@ -10,12 +10,12 @@ const userPermission = (req, res, next) => {
         if (err)
             res.status(err.status).json({error: err});
         else{
-            if(userId != compId) {
-                res.status(401).send(`You can modify your own profile!`);
-            }
-            else {
+            if(userId === compId || user.type === `Admin`) {
                 res.locals.userId = userId;
                 next();
+            }
+            else {
+                res.status(401).send(`You can modify your own profile!`);
             }
         }
     });   
