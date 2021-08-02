@@ -35,30 +35,13 @@ const getPosts = (req, res) => {
 const getPost = (req, res) => {
     const { id } = req.params;
     PostModel.findById(id).lean().populate({path: 'createdBy', select: '-password'}).exec((err, post) => {
-        const lastCommentId = req.body.lastCommentId || null;
-        let cursor;
-        if (lastCommentId === null)
-        {
-            cursor = CommentModel.find({postId: post._id}).limit(COMMENTS_NUM_PER_PAGE).lean().populate({path: 'createdBy', select: '-password'});
+        if (!err){
+            res.json({post});
         }
-        else
-        {
-                cursor = CommentModel.find({postId: post._id, '_id': {'$gt': lastCommentId} }).limit(COMMENTS_NUM_PER_PAGE).lean().populate({path: 'createdBy', select: '-password'});
+        else{
+            res.status(err.status).json({err});
         }
-        cursor.exec((err, comments) => {
-            post = {...post, comments};
-            if (!err){
-                if (comments.length !== 0)
-                    res.json({post, lastCommentId: comments[comments.length - 1]._id});
-                else{
-                    res.json({post, lastCommentId: undefined});
-                }
-            }
-            else{
-                res.json(err.status).json({err});
-            }
-        })
-        })
+        });
 }
 
 const addPost = (req, res) => {
@@ -82,7 +65,7 @@ const addPost = (req, res) => {
        if (err)
         res.redirect(`/login`);
         else{
-            const postType = user.type === `student` ? `request` : `offer`;
+            const postType = user.type === `Student` ? `request` : `offer`;
             const newPost = {...req.body, type: postType, createdBy: user._id};
             //validation
             PostModel.create(newPost, (err, newPost) => {
@@ -121,4 +104,76 @@ const deletePost = (req, res) => {
     })
 };
 
-module.exports = {getPosts, getPost, addPost, editPost, deletePost};
+const getComments = (req, res) => {
+    const { id } = req.params;
+    const lastCommentId = req.body.lastCommentId || null;
+        let cursor;
+        if (lastCommentId === null)
+        {
+            cursor = CommentModel.find({postId: id}).sort({_id: -1}).limit(COMMENTS_NUM_PER_PAGE).lean().populate({path: 'createdBy', select: '-password'});
+        }
+        else
+        {
+                cursor = CommentModel.find({postId: id, '_id': {'$lt': lastCommentId} }).sort({_id: -1}).limit(COMMENTS_NUM_PER_PAGE).lean().populate({path: 'createdBy', select: '-password'});
+        }
+        cursor.exec((err, comments) => {
+            if (!err){
+                if (comments.length !== 0)
+                    res.json({comments, lastCommentId: comments[comments.length - 1]._id});
+                else{
+                    res.json({lastCommentId: null});
+                }
+            }
+            else{
+                res.json(err.status).json({err});
+            }
+        })
+}
+
+const addComment = (req, res) => {
+    const postId = req.params.id;
+    const createdBy = req.cookies.userId;
+    const { content } = req.body;
+    const newComment = {createdBy, postId, content};
+    CommentModel.create(newComment, (err, newComment) => {
+        if (err){
+            res.status(err.status).json({err});
+        }
+        else{
+            res.status(201).json(newComment);
+        }
+    });
+};
+
+const editComment = (req, res) => {
+    const commentId = req.params.commentId;
+    CommentModel.findById(commentId, (err, comment) => {
+        if (err){
+            res.status(err.status).json({err});
+        }
+        else{
+            const content = req.body?.content;
+            if (content){
+                comment.content = content;
+                comment.save().then(editedComment => {
+                    res.json(editedComment);
+                })
+            }
+            else{
+                res.send(`comment cannot be empty`);
+            }
+        }
+        }
+    )
+};
+
+const deleteComment = (req, res) => {
+    const commentId = req.params.commentId;
+    CommentModel.deleteOne({'_id': commentId}, err => {
+        if (err)
+            res.status(err.status).json({err});
+        else res.send(`comment deleted!`);
+    })
+};
+
+module.exports = {getPosts, getPost, addPost, editPost, deletePost, getComments, addComment, editComment, deleteComment};

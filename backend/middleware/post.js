@@ -1,7 +1,7 @@
 const PostModel = require("../models/PostModel");
 const UserModel = require("../models/UserModel");
 
-const hasPermission = (req, res, next) => {
+const hasPermissionToPost = (req, res, next) => {
     const userId = req.cookies.userId;
     const postId = req.params.id;
     UserModel.findById(userId, (err, user) => {
@@ -30,4 +30,4 @@ const hasPermission = (req, res, next) => {
     
 }
 
-module.exports = {hasPermission};
+module.exports = {hasPermissionToPost};

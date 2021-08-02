@@ -1,12 +1,18 @@
 const express = require('express');
 const router = express.Router();
-const { getPosts, getPost, addPost, editPost, deletePost } = require('../controllers/post');
+const { getPosts, getPost, addPost, editPost, deletePost, getComments, addComment, editComment, deleteComment } = require('../controllers/post');
 const { requireAuth } = require('../middleware/auth');
-const { hasPermission } = require('../middleware/post');
+const { hasPermissionToPost } = require('../middleware/post');
+const { hasPermissionToComment } = require('../middleware/comment');
 
 router.get(`/`, getPosts);
 router.get(`/:id`, getPost);
 router.post(`/`, requireAuth, addPost);
-router.put(`/:id`, requireAuth, hasPermission, editPost);
-router.delete(`/:id`, requireAuth, hasPermission, deletePost);
+router.put(`/:id`, requireAuth, hasPermissionToPost, editPost);
+router.delete(`/:id`, requireAuth, hasPermissionToPost, deletePost);
+router.get(`/:id/comments/`, getComments);
+router.post(`/:id/comments/`, requireAuth, addComment);
+router.put(`/:id/comments/:commentId`, requireAuth, hasPermissionToComment, editComment);
+router.delete(`/:id/comments/:commentId`, requireAuth, hasPermissionToComment, deleteComment);
+
 module.exports = router;
