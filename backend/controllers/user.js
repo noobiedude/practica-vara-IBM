@@ -1,5 +1,5 @@
 const User = require('../models/UserModel');
-const { requireAuth, checkUser } = require('../middleware/auth');
+const Post = require('../models/PostModel');
 
 //obiectul users e un tablou de users de la care primesti _id, type, email, name, description
 /*
@@ -54,6 +54,8 @@ const deleteUser = async (req, res) => {
 
     try {
      const user = await User.findByIdAndDelete(id);
+     await Post.deleteMany({ createdBy: user.id });
+     
      if (!user) return res.status(404).json({error: "User not found"});
      return res.send(user);
     } 
