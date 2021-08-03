@@ -52,7 +52,7 @@ const signupPost = async (req, res) => {
     const token = createToken(user._id);
     res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 100}); //maxAge is in milliseconds
     res.cookie('userId', user._id, {httpOnly: true, maxAge: maxAge * 100});
-    res.status(201).json({user: user._id});
+    res.status(201).json({ user });
     //pe partea de front se trimit doar user._id si jwt token in cazul in care nu exista erori
   } 
   catch (err) {
@@ -76,7 +76,7 @@ const loginPost = async (req, res) => {
     const token = createToken(user._id);
     res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 100});
     res.cookie('userId', user._id, {httpOnly: true, maxAge: maxAge * 100});
-    res.status(200).json({ user: user._id });
+    res.status(201).json({ user });
   }
   catch (err) {
     const errors = handleErrors(err);
