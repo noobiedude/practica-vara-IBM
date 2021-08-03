@@ -5,16 +5,29 @@ const UserModel = require('../models/UserModel');
 
 const PAGE_SIZE = 10;
 const COMMENTS_NUM_PER_PAGE = 10;
+const QUERY_CONSTANTS_ABREVIATIONS = {
+    pl: `programmingLanguage`,
+    wh: `workHours`,
+    l: `location`,
+    type: `type`
+}
 
 const getPosts = (req, res) => {
     let lastPostId = req.body.lastPostId || null;
     let cursor;
+
+    const queryFromUrl = req.query;
+    let mongooseQuery = {};
+    for (let [key, value] of Object.entries(queryFromUrl)){
+        mongooseQuery = {...mongooseQuery, [QUERY_CONSTANTS_ABREVIATIONS[key]] : value}
+    }
+
     if (lastPostId === null)
     {
-        cursor = PostModel.find({}).sort({_id: -1}).limit(PAGE_SIZE).lean().populate({path: 'createdBy', select: '-password'})
+        cursor = PostModel.find({...mongooseQuery}).sort({_id: -1}).limit(PAGE_SIZE).lean().populate({path: 'createdBy', select: '-password'})
     }
     else{
-        cursor = cursor = PostModel.find({'_id': {'$lt': lastPostId}}).sort({_id: -1}).limit(PAGE_SIZE).lean().populate({path: 'createdBy', select: '-password'})
+        cursor = cursor = PostModel.find({...mongooseQuery, '_id': {'$lt': lastPostId}}).sort({_id: -1}).limit(PAGE_SIZE).lean().populate({path: 'createdBy', select: '-password'})
     }
     cursor.exec((err, posts) => {
         if (!err){
