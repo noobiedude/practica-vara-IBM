@@ -1,0 +1,30 @@
+{ "users":
+    [{    
+    "username": "Bob",
+    "email": "bob@yahoo.com",
+    "password": "mango1234NO",
+    "bio": "I am a really cool guy and I love to code",
+    "type": "Student",
+    "image": "https://wallpaperaccess.com/full/854883.jpg",
+    "updateFile": ""
+},
+{    
+    "username": "Spencer",
+    "email": "Spencer@yahoo.com",
+    "password": "mango5678NO",
+    "bio": "Big company, big bang, big boys only",
+    "type": "Company",
+    "image": "https://i.pinimg.com/600x315/1e/f4/88/1ef488744b81591d9442f7b7a285e07f.jpg",
+    "updateFile": ""
+},
+{    
+    "username": "Hector",
+    "email": "Hector@yahoo.com",
+    "password": "mango1234YES",
+    "bio": "I just want to die",
+    "type": "Admin",
+    "image": "https://pbs.twimg.com/media/EaIOYg0XkAAh38L.jpg",
+    "updateFile": ""
+}
+]
+}
