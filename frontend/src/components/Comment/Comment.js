@@ -11,13 +11,14 @@ function Comment(props) {
   useEffect(() => {
     axios.get("/posts/" + id+"/comments").then((response) => {
       setComment(response.data.comments);
-      console.log(response.data.comments);
+      
       
     });
   }, []);
-  console.log(comments)
-
+ if(comments!==undefined){
+   
   return (
+    
     <React.Fragment>
       {comments.map((comment)=>(
         <div className="comment"  >
@@ -41,7 +42,9 @@ function Comment(props) {
       ))}
       </React.Fragment>
   );
-    
+  }else{
+    return(<div></div>)
+  }
     
   
 }

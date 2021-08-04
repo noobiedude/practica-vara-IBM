@@ -45,7 +45,7 @@ padding:0.5rem;
     display:flex;
     flex-direction: column;
     .comment-body__comment{
-        margin-left:3.5rem;   
+        margin-left:3rem;   
      }
      button{
          align-self: flex-end;
@@ -64,4 +64,19 @@ padding:0.5rem;
   .comment-section{
       width:50%;
    
+  }
+  @media(max-width:768px){
+    .comment-section{
+        width:100%;
+     
+    }
+    .comment{
+        height:15vh;
+    }
+    .comment-body{
+        button{
+            align-self: flex-start;
+            margin-left:3rem; 
+        }
+    }
   }
