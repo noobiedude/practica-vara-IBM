@@ -11,6 +11,7 @@ const PORT = process.env.PORT || 5000;
 const postRoutes = require(`./routes/post`);
 const authRoutes = require(`./routes/auth`);
 const userRoutes = require(`./routes/user`);
+const profileRoutes = require('./routes/profile');
 const cookieParser = require('cookie-parser');
 //middleware pentru rutele care trebuie protejate
 const { requireAuth, checkUser } = require('./middleware/auth'); 
@@ -25,9 +26,9 @@ app.use(cors({
 
 //app.get('*', checkUser);
 app.use(`/posts`, postRoutes);
+app.use(`/profile`, profileRoutes);
 app.use(`/`, authRoutes);
 app.use(`/`, userRoutes);
-
 databaseConfig.connectToDatabase();
 
 app.listen(PORT, () => {
