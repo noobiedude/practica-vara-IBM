@@ -1,41 +1,49 @@
-import React from "react";
-import "../Inspect/Inspect.sass";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import axios from "../../axios/axios";
+// import "../Inspect/Inspect.sass";
+import "./Comment.scss";
 
 function Comment(props) {
-  let name = <p> Some error text</p>;
-  let typeOf = <p> Some error text</p>;
 
-  if (props.comm.createdBy !== undefined) {
-    console.log(props.comm.createdBy)
-    const property = Object.values(props.comm.createdBy);
-    name = property[3];
-    typeOf = property[1];
-  }
+  const { id } = useParams();
+  const [comments, setComment] = useState([]);
+  useEffect(() => {
+    axios.get("/posts/" + id+"/comments").then((response) => {
+      setComment(response.data.comments);
+      console.log(response.data.comments);
+      
+    });
+  }, []);
+  console.log(comments)
+
   return (
-    <div class="plx-card silver">
-      <div class="pxc-avatar">
-        <img
-          src="https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png"
-          alt=""
-        />
-      </div>
-      <div class="pxc-subcard">
-        <div class="pxc-title">{props.comm.content}</div>
-        <div class="pxc-sub"> {props.comm.createdAt} </div>
-        <div class="pxc-feats">
-          <span>{props.comm.editedAt}</span>
-        </div>
-        <div class="pxc-tags">
-            
-        </div>
-        <div class="bottom-row">
-          <div class="pxc-info">
-            <div class="region">{name} ({typeOf})</div>
+    <React.Fragment>
+      {comments.map((comment)=>(
+        <div className="comment"  >
+        <div className="comment-head ">
+          <div className="comment-head__logo"><img src="https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png"/></div>
+          <div className="comment-head__info"><div className="comment-head__name">
+          <p key={comment.createdBy.name}>{comment.createdBy.name}</p>
           </div>
+          <div className="comment-head__date">
+          <p key={comment.createdAt}>{comment.createdAt}</p>
+          </div>
+          </div>
+          
         </div>
-      </div>
-    </div>
+        <div className="comment-body">
+        <p className="comment-body__comment" key={comment.content}>{comment.content}</p>
+        <button>Reply</button>
+        </div>
+        
+        </div>
+      ))}
+      </React.Fragment>
   );
+    
+    
+  
 }
 
 export default Comment;
