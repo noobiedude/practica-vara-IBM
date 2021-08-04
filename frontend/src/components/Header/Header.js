@@ -17,8 +17,7 @@ import {
 import MenuIcon from "@material-ui/icons/Menu";
 import React, { useState, useEffect } from "react";
 import { Link as RouterLink } from "react-router-dom";
-// import "./Header.scss";
-// change style to scss!!!!!!!!!!!!!!
+
 
 const headersData = [
   {
@@ -137,7 +136,7 @@ export default function Header() {
             <div>
               <NavLink to={`/userprofile`} style={{ textDecoration: "none" }}>
                 <Button disabled style={{ color: "white" }}>
-                  {currentUser.username}
+                  {currentUser.name}
                 </Button>
               </NavLink>
               <Button onClick={logout} style={{ color: "#ADFF2F" }}>
@@ -197,7 +196,7 @@ export default function Header() {
             <div>
               <NavLink to={`/userprofile`} style={{ textDecoration: "none", color: "5F9EA0" }}>
                 <Button disabled style={{ color: "5F9EA0" }}>
-                  {currentUser.username}
+                  {currentUser.name}
                 </Button>
               </NavLink>
               <Button
@@ -225,7 +224,7 @@ export default function Header() {
             <div>
               <NavLink to={`/userprofile`} style={{ textDecoration: "none" }}>
                 <Button disabled style={{ color: "white" }}>
-                  {currentUser.username}
+                  {currentUser.name}
                 </Button>
               </NavLink>
               <Button
