@@ -55,6 +55,7 @@ const deleteUser = async (req, res) => {
     try {
      const user = await User.findByIdAndDelete(id);
      await Post.deleteMany({ createdBy: user.id });
+     await Comment.deleteMany({ createdBy: user.id });
      
      if (!user) return res.status(404).json({error: "User not found"});
      return res.send(user);
