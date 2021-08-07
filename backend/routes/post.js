@@ -5,7 +5,7 @@ const { requireAuth } = require('../middleware/auth');
 const { hasPermissionToPost } = require('../middleware/post');
 const { hasPermissionToComment } = require('../middleware/comment');
 
-router.get(`/`, getPosts);
+router.post(`/`, getPosts);
 router.get(`/:id`, getPost);
 router.post(`/`, requireAuth, addPost);
 router.put(`/:id`, requireAuth, hasPermissionToPost, editPost);
