@@ -4,7 +4,7 @@ const CommentModel = require('../models/CommentModel');
 const UserModel = require('../models/UserModel');
 
 const PAGE_SIZE = 10;
-const COMMENTS_NUM_PER_PAGE = 10;
+const COMMENTS_NUM_PER_PAGE = 50;
 const QUERY_CONSTANTS_ABREVIATIONS = {
     pl: `programmingLanguage`,
     wh: `workHours`,

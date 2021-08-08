@@ -2,10 +2,11 @@ const { cos } = require('../config/ibmCosConfig');
 const BUCKET_NAME = `summerinternship`;
 
 const getFile = (name) => {
-    return cos.getObject({
+    const object =  cos.getObject({
         Bucket: BUCKET_NAME,
-        Key: name
-    }).createReadStream();
+        Key: `${name}.jpg`
+    })
+    return object.createReadStream();
 }
 
 module.exports = {getFile};

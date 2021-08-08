@@ -101,7 +101,7 @@ const deleteUser = async (req, res) => {
 
 const getProfilePicture = (req, res) => {
     console.log(`Getting the picture!`);
-    getFile(req.body.name).pipe(res);
+    getFile(req.params.id).on(`error`, () => getFile(`default`).pipe(res)).pipe(res);
 }
 
 
