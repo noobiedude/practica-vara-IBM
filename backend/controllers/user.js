@@ -1,5 +1,6 @@
 const User = require('../models/UserModel');
 const Post = require('../models/PostModel');
+const { getFile } = require('./ibmCos');
 
 //obiectul users e un tablou de users de la care primesti _id, type, email, name, description
 /*
@@ -98,4 +99,11 @@ const deleteUser = async (req, res) => {
     }
 };
 
-module.exports = { getUsers, getUser, updateUser, deleteUser };
+const getProfilePicture = (req, res) => {
+    console.log(`Getting the picture!`);
+    getFile(req.body.name).pipe(res);
+}
+
+
+
+module.exports = { getUsers, getUser, updateUser, deleteUser, getProfilePicture };
