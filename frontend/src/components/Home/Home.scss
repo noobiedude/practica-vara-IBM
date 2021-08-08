@@ -1,8 +1,52 @@
-.home {
-    flex: 1;
-    align-content: center;
-    justify-content: center;
-    // position: relative;
-    margin: auto;
-    z-index: auto;
-  }
+.App-link {
+  color: #09d3ac;
+}
+ 
+
+ 
+.slides .slick-prev,
+.slides .slick-next {
+  position: absolute;
+  top: 50%;
+  z-index: 1;
+}
+
+
+.slides {
+  position: relative;
+}
+
+.slides .slick-prev,
+.slides .slick-next {
+  position: absolute;
+  top: 50%;
+  z-index:1;
+}
+
+.slides .slick-prev {
+  left: 5%;
+}
+
+.slides .slick-next {
+  right: 5%;
+}
+
+.slider-img{
+ width: 45%;
+ height: 30%;
+ display: block;
+ margin-left: auto;
+ margin-right: auto;
+ border-radius: 15px;
+ 
+}
+
+.slick-arrow::before{
+  color:gray !important;
+  background-color: white;
+  border-radius: 50%;
+  padding: 10px;
+  cursor: pointer;
+}
+ 
+ 
