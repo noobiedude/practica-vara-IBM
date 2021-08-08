@@ -1,51 +1,72 @@
 import React, { useState, useEffect } from "react";
-// import TweetBox from "./TweetBox";
 import Post from "../Post/Post";
 import User from "../User/User";
 import "./Feed.scss";
 import FlipMove from "react-flip-move";
 import axios from "../../axios/axios";
+import { v4 as uuidv4 } from 'uuid';
 
 function Feed() {
   const [error, setError] = useState(false);
-  const [posts, setPosts] = useState([]);
+  const [data, setData] = useState([]);
+  const [lastPostId, setLastPostId] = useState(""); 
+  const [onBottom, setOnBottom] = useState(true);
+  const [hasMorePosts, setHasMorePosts] = useState(true);
   useEffect(() => {
+    if (onBottom){
+      getData();
+      setOnBottom(false);
+    }
+  }, [onBottom]);
+
+  function getData() {
+    if (hasMorePosts){
     axios
-      .get("/posts")
+      .post("/posts", { lastPostId: lastPostId})
       .then((response) => {
-        setPosts(response.data.posts);
-        console.log(response.data.posts)
+        if (response.data.lastPostId === undefined)
+          setHasMorePosts(false);
+        //console.log(response.data);
+
+        setData([...data, ...response.data?.posts]);
+
+        setLastPostId(response.data.lastPostId);
       })
       .catch((error) => {
-        console.log(error);
-        setError(true);
+        alert("Axios POST request failed");
       });
-  }, []);
-
-  let Posts = <p style={{ textAlign: "center" }}>Something went wrong</p>;
-  if (!error) {
-    Posts = posts.map((post, index) => {
-      return (
-        <div key={index}>
-
-        <Post
-          post={post}
-          />{" "}
-          </div>
-      );
-    });
+    }
   }
 
+  const firstEvent = (e) => {
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+      // you're at the bottom of the page
+      console.log(`reached bottom!`);
+      setOnBottom(true);
+  }
+  };
+
+  useEffect(() => {
+    window.addEventListener(`scroll`, firstEvent);
+    return () => {
+      window.removeEventListener(`scroll`, firstEvent);
+    }
+  }, [])
+
   return (
-    <div className="feed">
-      {/* <div className="feed__header"> */}
-      {/* </div> */}
+<div>
+<table class="table">
+<tbody>
+{data.map((item) => {
+return (
+<div key={uuidv4()}>
+<Post post={item} />{" "}
+</div>
 
-      {/* <TweetBox /> */}
-
-      {Posts}
+)})}
+        </tbody>
+      </table>
     </div>
   );
 }
-
 export default Feed;
