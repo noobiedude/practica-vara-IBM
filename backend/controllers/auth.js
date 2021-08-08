@@ -38,8 +38,6 @@ const createToken = (id) => {
 }
 
 //REGISTER
-//TO DO: Hook from the front-end too
-
 const signupGet = (req, res) => {
   res.render(`signup view here`);
 };
@@ -53,7 +51,7 @@ const signupPost = async (req, res) => {
     res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 100}); //maxAge is in milliseconds
     res.cookie('userId', user._id, {httpOnly: true, maxAge: maxAge * 100});
     res.status(201).json({ user });
-    //pe partea de front se trimit doar user._id si jwt token in cazul in care nu exista erori
+    //pe partea de front se trimite un obiect json user si jwt token in cazul in care nu exista erori
   } 
   catch (err) {
     const errors = handleErrors(err);
@@ -63,7 +61,6 @@ const signupPost = async (req, res) => {
 };
 
 //Login
-
 const loginGet = (req, res) => {
   res.render(`login view here`);
 };
@@ -89,7 +86,7 @@ const logoutGet = (req, res) => {
   res.cookie('jwt', '', {maxAge: 1});
   res.cookie('userId', '', {maxAge: 1});
   //redirect to homepage
-  // res.redirect('/');
+  res.redirect('/');
   res.send("You logged out!");
 };
 

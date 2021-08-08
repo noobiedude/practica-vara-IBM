@@ -23,20 +23,53 @@ const { getFile } = require('./ibmCos');
     }
 */
 
-const getUsers = (req, res) => {
-    User.find((err, users) => {
-        if(err) {
-            return res.status(err.status).json({ error: err });
+const getUsers = async (req, res) => {    
+
+    const query = req.query;
+    
+    if(query.name || query.type) {
+        if(query.name) {
+            await User.find({"name": { "$regex": `${query.name}`, "$options": "i"}} , (err, users) => {
+            if(err) {
+                return res.status(err.status).json({ error: err });
+            }
+            res.status(201).json({ users });
+        }).select("type name email description");
         }
-        res.status(201).json({ users });
-    }).select("name type email description");
+        else if(query.type) {
+            await User.find({"type": { "$regex": `${query.type}`, "$options": "i"}} , (err, users) => {
+            if(err) {
+                return res.status(err.status).json({ error: err });
+            }
+            res.status(201).json({ users });
+        }).select("type name email description");
+        }
+        else {
+            await User.find({"type": { "$regex": `${query.type}`, "$options": "i"},
+                             "name": { "$regex": `${query.name}`, "$options": "i"}} , (err, users) => {
+                if(err) {
+                    return res.status(err.status).json({ error: err });
+                }
+                res.status(201).json({ users });
+            }).select("type name email description");
+        }
+    }
+    else {
+        await User.find((err, users) => {
+            if(err) {
+                return res.status(err.status).json({ error: err });
+            }
+            res.status(201).json({ users });
+        }).select("type name email description");
+    }
+
 };
 
 
-const getUser = (req, res) => {
+const getUser = async (req, res) => {
     const { id } = req.params;
 
-    User.findById(id, function (err, user) {
+    await User.findById(id, function (err, user) {
         if (err) return res.status(err.status).send("There was a problem finding the user.");
         if (!user) return res.status(404).send("No user found.");
         res.status(200).json(user);
@@ -56,6 +89,7 @@ const deleteUser = async (req, res) => {
     try {
      const user = await User.findByIdAndDelete(id);
      await Post.deleteMany({ createdBy: user.id });
+     await Comment.deleteMany({ createdBy: user.id });
      
      if (!user) return res.status(404).json({error: "User not found"});
      return res.send(user);
