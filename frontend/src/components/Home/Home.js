@@ -54,7 +54,13 @@ class Home extends React.Component {
         )
       })}
     </Slider>
-    </div>
+    <br /><br />
+    <a href="/addPost">click</a>
+   </div>
+
+     
+    
+
       );
     }
     
