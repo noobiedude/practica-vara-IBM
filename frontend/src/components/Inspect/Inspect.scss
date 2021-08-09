@@ -60,7 +60,7 @@
 .post-full-description{
     display: flex;
     flex-direction: column;
-    height: 40vh;
+    min-height: 40vh;
     width: 90%;
     margin: 0 auto;
     justify-content: flex-start;
@@ -209,7 +209,7 @@
     margin-bottom: 1rem;
   }
   .post-full-description{
-      height: 70vh;
+      min-height: 70vh;
   }
   .glow-on-hover{
       width:50%;
