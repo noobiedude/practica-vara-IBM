@@ -7,7 +7,7 @@ const { hasPermissionToComment } = require('../middleware/comment');
 
 router.post(`/`, getPosts);
 router.get(`/:id`, getPost);
-router.post(`/`, requireAuth, addPost);
+router.post(`/addPost`, requireAuth, addPost);
 router.put(`/:id`, requireAuth, hasPermissionToPost, editPost);
 router.delete(`/:id`, requireAuth, hasPermissionToPost, deletePost);
 router.get(`/:id/comments/`, getComments);
