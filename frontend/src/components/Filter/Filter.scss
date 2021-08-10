@@ -1,0 +1,48 @@
+.container {
+    width: 100vw;
+    height: 100vh;
+    background-color: #b3b3b3;
+    box-sizing: border-box;
+    position: absolute;
+}
+
+.filter-container {
+    width: 2rem;
+    height: 1rem;
+    background-color: royalblue;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    padding: 0.8rem 2.5rem;
+    position: absolute;
+    left: 1rem;
+    bottom: 0.5rem;
+}
+
+.filter-text {
+    font-size: 1rem;
+}
+
+.filter-open-container {
+    position: absolute;
+    top: 5rem;
+    left: 65%;
+    background-color: royalblue;
+    width: 300px;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+}
+
+.filter-open-text {
+    font-size: 1.2rem;
+    margin: 0.5rem 1rem;
+    color: white;
+}
+
+.form {
+    display: "flex";
+    flex-direction: "column";
+  }
