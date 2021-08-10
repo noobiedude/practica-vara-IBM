@@ -19,12 +19,12 @@ function Feed () {
   const [location, setLocation] = useState('')
   const [filter, setFilter] = useState({})
 
-  function onChange (nameValue, value) {
-    if (nameValue === 'programmingLanguage') setProgrammingLanguage(value)
-    if (nameValue === 'workHours') setWorkHours(value)
-    if (nameValue === 'type') setType(value)
-    if (nameValue === 'location') setLocation(value)
-  }
+  // function onChange (nameValue, value) {
+  //   if (nameValue === 'programmingLanguage') setProgrammingLanguage(value)
+  //   if (nameValue === 'workHours') setWorkHours(value)
+  //   if (nameValue === 'type') setType(value)
+  //   if (nameValue === 'location') setLocation(value)
+  // }
 
   useEffect(() => {
     if (onBottom) {
@@ -35,13 +35,6 @@ function Feed () {
 
   function getData () {
     if (hasMorePosts) {
-      if (programmingLanguage !== '') {
-        setFilter(prevState => ({
-          ...prevState,
-          pl: programmingLanguage
-        }))
-        console.log(filter)
-      }
       axios
         .post(
           '/posts',
@@ -63,6 +56,14 @@ function Feed () {
         })
     }
   }
+
+  useEffect(() => {
+    setFilter(prevState => ({
+      ...prevState,
+      pl: programmingLanguage
+    }))
+    console.log(filter)
+  }, [programmingLanguage])
 
   const firstEvent = e => {
     if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
@@ -86,7 +87,6 @@ function Feed () {
         type={type}
         programmingLanguage={programmingLanguage}
         workHours={workHours}
-        onNameChange={onChange}
         setProgrammingLanguage={setProgrammingLanguage}
       />
       {data.map(item => {
