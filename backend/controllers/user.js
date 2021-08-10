@@ -1,6 +1,6 @@
 const User = require('../models/UserModel');
 const Post = require('../models/PostModel');
-const { getFile } = require('./ibmCos');
+const { getFile, uploadFile } = require('./ibmCos');
 
 //obiectul users e un tablou de users de la care primesti _id, type, email, name, description
 /*
@@ -104,6 +104,8 @@ const getProfilePicture = (req, res) => {
     getFile(req.params.id).on(`error`, () => getFile(`default`).pipe(res)).pipe(res);
 }
 
+const addProfilePicture = (req, res) => {
+    uploadFile(req.cookies.id, req.body.profilePicture).then(res.send(`uploaded!`));
+}
 
-
-module.exports = { getUsers, getUser, updateUser, deleteUser, getProfilePicture };
+module.exports = { getUsers, getUser, updateUser, deleteUser, getProfilePicture, addProfilePicture };

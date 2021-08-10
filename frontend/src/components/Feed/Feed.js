@@ -55,8 +55,7 @@ function Feed() {
 
   return (
 <div>
-<table class="table">
-<tbody>
+
 {data.map((item) => {
 return (
 <div key={uuidv4()}>
@@ -64,8 +63,6 @@ return (
 </div>
 
 )})}
-        </tbody>
-      </table>
     </div>
   );
 }

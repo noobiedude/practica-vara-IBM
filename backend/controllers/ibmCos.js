@@ -9,4 +9,12 @@ const getFile = (name) => {
     return object.createReadStream();
 }
 
-module.exports = {getFile};
+const uploadFile = (name, file) => {
+    return cos.putObject({
+        Bucket: BUCKET_NAME,
+        Key: name,
+        Body: file
+    }).promise();
+}
+
+module.exports = {getFile, uploadFile};
