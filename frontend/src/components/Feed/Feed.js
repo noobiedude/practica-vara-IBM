@@ -50,6 +50,7 @@ function Feed () {
       })
       .catch(error => {
         console.log(error)
+        alert("Your type of user cannot delete this post!")
       })
   }
 
