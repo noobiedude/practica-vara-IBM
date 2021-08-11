@@ -1,82 +1,60 @@
-import "../Inspect/Inspect.scss";
-import React from "react";
- function getId(){
-   
-    
- }
+import '../Inspect/Inspect.scss'
+import React from 'react'
+import { useParams } from 'react-router-dom'
+import axios from '../../axios/axios'
+import * as Yup from 'yup'
+import { useFormik } from 'formik'
+import { TextField } from '@material-ui/core'
 
-class AddCommentForm extends React.Component {
-    constructor(props) {
-      super(props);
-      this.state = {value: ''};
-  
-      this.handleChange = this.handleChange.bind(this);
-      this.handleSubmit = this.handleSubmit.bind(this);
-    }
-    
-    handleChange(event) {
-      this.setState({value: event.target.value});
-    }
-  
-    handleSubmit(event) {
-      alert('A name was submitted: ' + this.state.value);
-     let x=window.location.pathname.split('/')[3];
-      fetch('http://localhost:3000/posts/'+x+'/comments/', {
-        method: 'POST',
-        // We convert the React state to JSON and send it as the POST body
-        body: JSON.stringify(this.state.value)
-      }).then(function(response) {
-        console.log(response)
-        return response.json();
-      });
+const AddCommentForm = props => {
+  const { id } = useParams()
+  const formik = useFormik({
+    initialValues: {
+      comment: ''
+    },
+    validationSchema: Yup.object({
+      comment: Yup.string().required('Required')
+    }),
+    onSubmit: values => {
+      alert(JSON.stringify(values, null, 1))
+      console.log(values)
 
-      event.preventDefault();
+      axios
+        .post(`/posts/` + id + `/comments `, { content: values.comment })
+        .then(response => {
+          // console.log(values)
+          window.location.reload()
+        })
+        .catch(error => {
+          alert('Axios POST request failed')
+        })
     }
-  
-    render() {
-      return (
-        <form onSubmit={this.handleSubmit}>
-                 <input type="text" value={this.state.value} placeholder="Add a comment" onChange={this.handleChange}/>
-                
-                <div className="submit-button">
-               <button type="submit" className="glow-on-hover">Add</button>
-               </div>
-        
-             </form>
-      );
-    }
-  }
+  })
 
-// class AddCommentForm extends React.Component {
-//     constructor(props) {
-//       super(props);
-//       this.state = { name: '' };
-//     }
-  
-//     handleChange = (event) => {
-//       this.setState({name: event.target.value});
-//     }
-  
-//     handleSubmit = (event) => {
-//       alert('A form was submitted: ' + this.state);
-  
-//       fetch('http://localhost:3000/:id/comments/', {
-//           method: 'POST',
-//           // We convert the React state to JSON and send it as the POST body
-//           body: JSON.stringify(this.state)
-//         }).then(function(response) {
-//           console.log(response)
-//           return response.json();
-//         });
-  
-//       event.preventDefault();
-//   }
-  
-//     render() {
-//       return (
-//        
-//       );
-//     }
-//   }
+  return (
+    <form onSubmit={formik.handleSubmit} className='formComm'>
+      <TextField
+        id='comment'
+        label='Add Comment'
+        class='text-input'
+        onChange={formik.handleChange}
+        value={formik.values.comment}
+        onBlur={formik.handleBlur}
+        error={formik.errors.comment && formik.touched.comment ? true : false}
+        helperText={
+          formik.errors.comment && formik.touched.comment
+            ? formik.errors.comment
+            : ''
+        }
+      />
 
-  export default AddCommentForm;
+      <div className='submit-button'>
+        <button type='submit' className='glow-on-hover'>
+          Add
+        </button>
+      </div>
+    </form>
+  )
+}
+
+export default AddCommentForm
