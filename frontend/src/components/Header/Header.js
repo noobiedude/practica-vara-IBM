@@ -134,6 +134,11 @@ export default function Header() {
             </NavLink>
           ) : (
             <div>
+            <NavLink to={`/addPost`} style={{ textDecoration: "none", color: "5F9EA0" }}>
+               <Button disabled style={{ color: "white" }}>
+                Add Post
+               </Button>
+             </NavLink>
               <NavLink to={`/userprofile`} style={{ textDecoration: "none" }}>
                 <Button disabled style={{ color: "white" }}>
                   {currentUser.name}
@@ -194,11 +199,19 @@ export default function Header() {
             </NavLink>
           ) : (
             <div>
+            <NavLink to={`/addPost`} style={{ textDecoration: "none", color: "5F9EA0" }}>
+               
+               <Button disabled style={{ color: "5F9EA0" }}>
+                Add Post
+               </Button>
+             </NavLink>
               <NavLink to={`/userprofile`} style={{ textDecoration: "none", color: "5F9EA0" }}>
+               
                 <Button disabled style={{ color: "5F9EA0" }}>
                   {currentUser.name}
                 </Button>
               </NavLink>
+              
               <Button
                 onClick={logout}
                 style={{ color: "#ADFF2F" }}
