@@ -49,7 +49,7 @@ function Inspect () {
       })
   }
 
-  let Comments = <p style={{ textAlign: 'center' }}>Something went wrong</p>
+  let Comments = <p style={{ textAlign: 'center' }}>There are no comments</p>
   if (comments !== undefined) {
     Comments = comments.map(comment => {
       return (
