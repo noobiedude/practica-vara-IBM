@@ -1,9 +1,14 @@
 import React from 'react'
 import './Filter.scss'
-import { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Modal from '@material-ui/core/Modal'
-import { InputLabel, MenuItem, Select, TextField } from '@material-ui/core'
+import {
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+  Button
+} from '@material-ui/core'
 
 function rand () {
   return Math.round(Math.random() * 20) - 10
@@ -35,7 +40,6 @@ const useStyles = makeStyles(theme => ({
 
 const Filter = props => {
   const classes = useStyles()
-  // getModalStyle is not a pure function, we roll the style only on the first render
   const [modalStyle] = React.useState(getModalStyle)
   const [open, setOpen] = React.useState(false)
 
@@ -47,8 +51,6 @@ const Filter = props => {
     setOpen(false)
   }
   const handleChange = (field, event) => {
-    // props.field = event.target.value
-    // props.onNameChange(field, event.target.value)
     if (field === 'programmingLanguage') {
       props.setProgrammingLanguage(event.target.value)
     }
@@ -110,9 +112,9 @@ const Filter = props => {
 
   return (
     <div>
-      <button type='button' onClick={handleOpen}>
-        Open Modal
-      </button>
+      <Button variant='outlined' onClick={handleOpen}>
+        Filter
+      </Button>
       <Modal
         open={open}
         onClose={handleClose}
