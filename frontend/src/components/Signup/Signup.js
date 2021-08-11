@@ -36,20 +36,19 @@ const Signup = () => {
     },
     validationSchema: Yup.object({
       name: Yup.string()
-        .max(30, "Must be 30 characters or less")
-        .min(2, "Must be 2 characters or more")
+        .max(100, "Must be 100 characters or less")
+        .min(10, "Must be 10 characters or more")
         .required("Required"),
       email: Yup.string().email("Invalid email").required("Required"),
       type: Yup.string()
         .oneOf(["Student", "Company"], "Invalid Type")
         .required("Required"),
       description: Yup.string()
-        .max(1500, "Must be 1500 characters or less")
-        .min(30, "Must be 30 characters or more")
+        .max(1000, "Must be 1000 characters or less")
+        .min(10, "Must be 10 characters or more")
         .required("Required"),
       password: Yup.string()
-        .max(30, "Must be 30 characters or less")
-        .min(8, "Must be 8 characters or more")
+        .min(6, "Must be 6 characters or more")
         .required("Required"),
     }),
     onSubmit: (values) => {
