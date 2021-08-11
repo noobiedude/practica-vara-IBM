@@ -36,7 +36,7 @@ function Inspect () {
         axios.get('/posts/' + id + '/comments').then(response => {
           const Comments = response.data.comments
           console.log(Comments)
-          const updateComments = Comments.map(Comment => {
+          const updateComments = Comments && Comments.map(Comment => {
             return {
               ...Comment
             }
@@ -50,7 +50,7 @@ function Inspect () {
   }
 
   let Comments = <p style={{ textAlign: 'center' }}>There are no comments</p>
-  if (comments !== undefined) {
+  if (!!comments) {
     Comments = comments.map(comment => {
       return (
         <div key={comments._id}>
