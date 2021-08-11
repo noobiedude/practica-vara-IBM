@@ -3,12 +3,7 @@ import './Filter.scss'
 import { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Modal from '@material-ui/core/Modal'
-import {
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField
-} from '@material-ui/core'
+import { InputLabel, MenuItem, Select, TextField } from '@material-ui/core'
 
 function rand () {
   return Math.round(Math.random() * 20) - 10
@@ -57,8 +52,17 @@ const Filter = props => {
     if (field === 'programmingLanguage') {
       props.setProgrammingLanguage(event.target.value)
     }
-    console.log(props.programmingLanguage)
-    console.log(event.target.value)
+    if (field === 'location') {
+      props.setLocation(event.target.value)
+    }
+    if (field === 'workHours') {
+      props.setWorkHours(event.target.value)
+    }
+    if (field === 'type') {
+      props.setType(event.target.value)
+    }
+    // console.log(props.programmingLanguage)
+    // console.log(event.target.value)
   }
   const body = (
     <div style={modalStyle} className={classes.paper}>
