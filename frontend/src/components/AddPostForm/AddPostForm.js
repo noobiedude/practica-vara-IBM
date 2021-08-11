@@ -5,8 +5,6 @@ import axios from "../../axios/axios";
 import { useHistory } from "react-router-dom";
 import "./addForm.scss";
 
-
-
 function AddPostForm () {
  
  
@@ -39,25 +37,12 @@ function AddPostForm () {
             .required("Required"),
           
         }),
-        onSubmit:(values)=>{
-          // console.log(values)
-          // const user=JSON.parse(window.localStorage.getItem("user"))
-          
+        onSubmit:values=>{
           let post=values;
           post.workHours= selectWork;
-         
-          
-          axios.post("/posts/addPost",post).then((response)=>{
-            console.log(post)
-            let posts=[]
-            posts=response.data.posts;
-            posts.push(post)
-            console.log(posts)
-            
-            if(response.data.posts){
-              localStorage.setItem("post", JSON.stringify(posts));
-
-            }
+          console.log(post)
+          axios.post(`/posts/addPost/`,{title:post.title,description:post.description,workHours:post.workHours,location:post.location,programmingLanguage:post.programmingLanguage}).then((response)=>{
+            console.log(response)
             history.push({ pathname: "/feed" });
             window.location.reload();
           })
@@ -97,8 +82,8 @@ function AddPostForm () {
         <div className="user-box box">
          <select  onChange={(e) => setSelectWork(e.target.value)}name="workHours" id="workHours" >
          <option   selected disabled hidden>Work hours select...</option>
-           <option value="Full-time">Full-time</option>
-           <option value="Part-time">Part-time</option>
+           <option value="full-time">Full-time</option>
+           <option value="part-time">Part-time</option>
            </select>
            <label className="user-box"> Work hours: </label>
     </div>
@@ -138,12 +123,7 @@ function AddPostForm () {
     </div>
 
       )
-    
-
-  
     }
     
-  
-
 
 export default AddPostForm;
