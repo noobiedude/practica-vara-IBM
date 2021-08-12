@@ -66,31 +66,34 @@ const Post = props => {
   const handleClose = () => {
     setOpen(false)
   }
+
+  const date = new Date(props.post.createdAt)
+
   return (
     <>
       <div>
-        <div class='movie_card'>
-          <div class='info_section'>
-            <div class='movie_header'>
+        <div className='movie_card'>
+          <div className='info_section'>
+            <div className='movie_header'>
               <img
-                class='locandina'
+                className='locandina'
                 src='https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png'
                 alt='some alt stuff'
               />
               <h2>{props.post.title}</h2>
               <h4>@{props.post.createdBy?.name}</h4>
-              <div class='minutes'>
+              <div className='minutes'>
                 <div>{props.post.type}</div>
                 <div>{props.post.workHours}</div>
                 <div>{props.post.location}</div>
                 <div>{props.post.programmingLanguage}</div>
-                <div>{props.post.createdAt}</div>
+                <div>{date.toUTCString()}</div>
               </div>
             </div>
-            <div class='movie_desc'>
-              <p class='text'>{props.post.description}</p>
+            <div className='movie_desc'>
+              <p className='text'>{props.post.description}</p>
             </div>
-            <div class='movie_social'>
+            <div className='movie_social'>
               <NavLink
                 to={`/posts/inspect/${props.post._id}`}
                 style={{ textDecoration: 'none', color: 'inherit' }}
