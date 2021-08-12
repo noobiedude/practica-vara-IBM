@@ -53,16 +53,19 @@ const UserProfile = () => {
         setError(true)
       })
   }, [])
-
-  let Posts = <p style={{ textAlign: 'center' }}>Something went wrong</p>
-  if (!error) {
-    Posts = posts?.map((post, index) => {
-      return (
-        <div key={index}>
-          <Post post={post} onRemovePost={removePost} />{' '}
-        </div>
-      )
-    })
+  let Posts
+  if (posts === undefined) {
+    Posts = <p style={{ textAlign: 'center' }}>This user hasn't posted yet</p>
+  } else {
+    if (!error) {
+      Posts = posts?.map((post, index) => {
+        return (
+          <div key={index}>
+            <Post post={post} onRemovePost={removePost} />{' '}
+          </div>
+        )
+      })
+    }
   }
 
   return (
@@ -88,9 +91,6 @@ const UserProfile = () => {
                   <div class='profile-header-info'>
                     <h4 class='m-t-10 m-b-5'>{currentUser.name}</h4>
                     <p class='m-b-10'>{currentUser.description}</p>
-                    {/* <a href='#' class='btn btn-sm btn-info mb-2'>
-                      Edit Profile
-                    </a> */}
                   </div>
                 </div>
               </div>
